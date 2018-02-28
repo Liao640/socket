@@ -1,0 +1,23 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+.chatroom{position: fixed; top:150px; left:10%; right:100px; bottom:60px; max-width: 1000px; border:2px solid #797979; border-radius:10px; overflow-y:scroll;}
+.submit_container { background: #fff; padding: 3px; position: fixed; z-index: 3; bottom:66px; left: 10.2%;  max-width: 980px; right:120px; padding-left: 10px;}
+.submit_container input { border: 0; padding: 10px; width: 88%; margin-right: .5%; float:left; border:1px solid #ccc; border-radius: 6px; outline: none;}
+.submit_container button { width: 11%; background: rgb(130, 224, 255); border: none; padding: 10px; float:left;   outline: none; text-align: center;}
+#messages { list-style-type: none; margin: 0; padding: 0; height: 1500px;}
+#messages li { padding: 5px 10px; padding-bottom:10px;display: flex}
+.msg_left {float:left; width: 40px; height: 100%; border-radius: 8px; margin-right: 10px; position: relative;}
+.msg_left img{ width: 40px; height: 40px; border-radius: 8px;}
+.msg_left .circle { position: absolute; right:0; top: 0; width: 10px; height: 10px;  border-radius: 5px; background-color: #f00;}
+.msg_left {float:left;}
+#messages li p {line-height: 26px; font-size: 18px;}
+#messages li .msg_title .time{font-size: 12px; margin-left: 14px; height: 26px;}
+.msg_body {width: 78%;margin-left: 8px;}
+#messages li:nth-child(odd) { background: #eee; }

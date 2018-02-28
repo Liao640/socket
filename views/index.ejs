@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <div class="chatroom">
+      <!-- <ul id="messages">
+        <% for (var i = 0; i < 5; i++) {%>
+            <li><%=msgList[i]%></li>
+        <%}%>
+      </ul> -->
+      <ul id="messages">
+        <% for (var i = 0; i < messageList.length; i++) {%>
+        <li>
+          <div class="msg_left">
+            <img src="../images/3.jpg">
+            <i class="<%= messageList[i].hasRead === false ? 'circle' : ''%>"></i>
+          </div>
+          <div class="msg_right">
+            <p class="msg_title">
+              <span>lsp</span>
+              <span class="time"><%=messageList[i].time%></span>
+            </p>
+            <p class="msg_body"><%=messageList[i].message%></p>
+          </div>
+        </li>
+        <%}%>
+      </ul>
+      <div class="submit_container">
+        <input id="m" autocomplete="off" />
+        <button id="submit">Send</button>
+      </div>
+    </div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="javascripts/jquery.js"></script>
+  <script>
+  var uuid = '<%- uuid %>'
+  var form = document.querySelector('form')
+  var ipt = document.querySelector('input')
+  var button = document.querySelector('button')
+  var messagesObj = document.querySelector('ul#messages')
+  // var chatroom = document.querySelector('.chatroom')
+
+  var socket = io.connect('http://localhost:3001')
+
+  // 连接后发消息，传uuid
+  socket.emit('join', {uuid: uuid})
+
+  button.addEventListener('click', function () {
+    var message = ipt.value
+    if (!message) {return}
+    var time = new Date()
+    socket.emit('send_msg', {
+      message,
+      time,
+      hasRead: false
+    })
+    ipt.value = ''
+    return false;
+  }, false)
+    // console.log('msgList', msgList)
+  var msgList = <%- msgListJson %>
+      // console.log(<%- msgList %>)
+
+  socket.on('message', function(data){
+    msgList.push(data)
+    var html = `<li>
+      <div class="msg_left">
+        <img src="../images/3.jpg">
+        <i class = ${data.hasRead == false ? 'circle' : ''} ></i>
+      </div>
+      <div class="msg_right">
+        <p class="msg_title">
+          <span>lsp</span>
+          <span class="time">${data.time}</span>
+        </p>
+        <p class="msg_body">${data.message}</p>
+      </div>
+    </li>`
+    messagesObj.innerHTML += html
+  });
+  $('ul').on('click', 'li', function(){
+    var idx = $(this).index()
+    msgList[idx].hasRead = true
+    console.log('msgList', msgList)
+    $(this).find('i').removeClass('circle')
+    socket.emit('read_msg', {id: msgList[idx].id})
+  })
+
+  </script>
+</html>
